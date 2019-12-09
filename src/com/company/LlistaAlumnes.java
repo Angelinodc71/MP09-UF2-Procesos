@@ -30,7 +30,7 @@ public class LlistaAlumnes implements Callable<Integer> {
 
     public static void main(String[] args) throws InterruptedException, ExecutionException {
 
-        ThreadPoolExecutor executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(3);
+        List<Integer> llistaResultats = new ArrayList<>();
         List<LlistaAlumnes> llistaTasques= new ArrayList<>();
 
         for (int i = 0; i < 10; i++) {
@@ -38,17 +38,8 @@ public class LlistaAlumnes implements Callable<Integer> {
             llistaTasques.add(calcula);
         }
 
-        List <Future<Integer>> llistaResultats;
-        llistaResultats = executor.invokeAll(llistaTasques);
-
-        executor.shutdown();
-
         for (int i = 0; i < llistaResultats.size(); i++) {
-            Future<Integer> resultat = llistaResultats.get(i);
-            try {
-                System.out.println("Resultat tasca "+llistaTasques.get(i).getNom()+ " és: " + resultat.get());
-            } catch (InterruptedException | ExecutionException ignored) {
-            }
+            System.out.println();
         }
 
     }
