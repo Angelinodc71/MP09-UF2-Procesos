@@ -1,5 +1,6 @@
 package com.company;
 
+import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.RecursiveTask;
 
 public class Factorial extends RecursiveTask<Double> {
@@ -20,20 +21,35 @@ public class Factorial extends RecursiveTask<Double> {
     @Override
     protected Double compute() {
         if (n<=3) {
-            factSeq(n);
+            return  (double)factSeq();
         }
         else {
-            fact(n);
+            return (double)fact();
         }
-        return (double)n;
     }
-    static int factSeq (int n) {
-        return n;
+    int factSeq () {
+        int temp = n;
+        for (int i = n-1; i>0; i--) {
+            temp*=i;
+        }
+        return temp;
     }
 
-    static int fact (int n) {
+    int fact() {
+        Factorial task = new Factorial(n-1);
+        task.fork();
+        return (int) (n * task.join());
+    }
 
-        return n;
+    public static void main(String[] args) {
+        ForkJoinPool exec = new ForkJoinPool();
+        Factorial factorial = new Factorial(3);
+        exec.invoke(factorial);
+        double result = factorial.join();
+        System.out.println(result);
+
+//        System.out.println(factorial.factSeq(5));
+
     }
 }
 
