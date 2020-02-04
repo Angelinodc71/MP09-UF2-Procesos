@@ -1,4 +1,4 @@
-package com.company;
+package com.company.a1;
 
 import java.util.ArrayList;
 import java.util.List;
