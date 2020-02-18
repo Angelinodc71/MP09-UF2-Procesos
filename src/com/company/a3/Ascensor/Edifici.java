@@ -1,6 +1,6 @@
 package com.company.a3.Ascensor;
 
-public class Edificio {
+public class Edifici {
     public static void main(String[] args) {
 
         Ascensor ascensor = new Ascensor(0);
