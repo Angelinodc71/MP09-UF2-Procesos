@@ -1,26 +1,41 @@
 package com.company.a3.Ascensor;
 
 public class Ascensor {
-    int plantaMAX;
-    int planta = 0;
+    int planta;
+    int limit = 10;
 
-    public synchronized void entrar() {
-        try {
-            while (planta == plantaMAX) wait();
-            planta--;
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+    int countPer = 0;
+
+
+    public Ascensor(int planta) {
+        this.planta = planta;
+    }
+
+    synchronized void notificar(){
         notifyAll();
     }
 
-    public synchronized void agafarpeça() {
+
+    public synchronized void pujar(int plantaAct){
         try {
-            while (planta == 0) wait();
-            planta++;
+            while (countPer == limit || plantaAct != planta) wait();
+            countPer++;
+            notifyAll();
+
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        notifyAll();
+
+    }
+
+    public synchronized void baixar(int plantaDesti) {
+
+        try {
+            while (countPer == limit || plantaDesti != planta) wait();
+            countPer--;
+            notifyAll();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 }
